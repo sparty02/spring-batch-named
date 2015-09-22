@@ -16,21 +16,17 @@ public class SampleJobTest {
         Properties jobParameters = new Properties();
         jobParameters.put("uuid", UUID.randomUUID().toString());
 
-        long executionId = BatchRuntime.getJobOperator().start("sampleJob",
-                jobParameters);
-        JobExecution jobExecution = BatchRuntime.getJobOperator()
-                .getJobExecution(executionId);
+        long executionId = BatchRuntime.getJobOperator().start("sampleJob", jobParameters);
+        JobExecution jobExecution = BatchRuntime.getJobOperator().getJobExecution(executionId);
 
         awaitCompletion(jobExecution);
     }
 
-    public static JobExecution awaitCompletion(JobExecution jobExecution)
-            throws InterruptedException {
+    public static JobExecution awaitCompletion(JobExecution jobExecution) throws InterruptedException {
 
         while (!jobExecution.getBatchStatus().equals(BatchStatus.COMPLETED)) {
             Thread.sleep(1000);
-            jobExecution = BatchRuntime.getJobOperator().getJobExecution(
-                    jobExecution.getExecutionId());
+            jobExecution = BatchRuntime.getJobOperator().getJobExecution(jobExecution.getExecutionId());
         }
 
         return jobExecution;
