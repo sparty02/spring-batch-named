@@ -2,13 +2,29 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/jobXML_1_0.xsd"
 	version="1.0">
+	
+	<listeners>
+		<listener ref="com.sparty02.batch.SimpleJobListener"></listener>
+	</listeners>
+	
 	<step id="step1">
 		<properties>
 			<property name="uuid" value="#{jobParameters['uuid']}" />
 		</properties>
+
+		<listeners>
+			<listener ref="com.sparty02.batch.SimpleChunkListener"></listener>
+			<!-- <listener ref="com.sparty02.batch.SimpleStepListener"></listener> -->
+		</listeners>
+
 		<chunk item-count="3">
-			<reader ref="simpleItemReader" />
-			<writer ref="simpleItemWriter" />
+			<reader ref="com.sparty02.batch.SimpleItemReader" />
+			<writer ref="com.sparty02.batch.SimpleItemWriter" />
 		</chunk>
+
+		<partition>
+			<mapper ref="com.sparty02.batch.SimplePartitionMapper"></mapper>
+			<collector ref="com.sparty02.batch.SimplePartitionCollector"></collector>
+		</partition>
 	</step>
 </job>

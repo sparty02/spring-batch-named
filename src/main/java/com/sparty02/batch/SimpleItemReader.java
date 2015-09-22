@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.batch.api.BatchProperty;
 import javax.batch.api.chunk.AbstractItemReader;
+import javax.inject.Inject;
 import javax.inject.Named;
 
 @Named
@@ -13,8 +15,15 @@ public class SimpleItemReader extends AbstractItemReader {
 
     private Iterator<String> colorIterator;
 
+    @Inject
+    @BatchProperty(name = "key")
+    private String key;
+
     @Override
     public void open(Serializable checkpoint) throws Exception {
+
+        System.out.println(String.format("key=%s", key));
+
         List<String> colors = new ArrayList<>();
         colors.add("red");
         colors.add("orange");
